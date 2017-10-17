@@ -14,15 +14,11 @@ class MoviesController < ApplicationController
     
     
     if params[:sorting_mechanism].nil?
+      @sorting_mechanism = session[:sorting_mechanism]
     else
       session[:sorting_mechanism] = params[:sorting_mechanism]
     end
     
-    if params[:sorting_mechanism].nil?
-      @sorting_mechanism = session[:sorting_mechanism]
-      flash.keep
-      redirect_to movies_path({sort_by: @sorting_mechanism})
-    end
     
     @movies = Movie.all
       
