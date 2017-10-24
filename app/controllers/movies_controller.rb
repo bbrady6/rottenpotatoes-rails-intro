@@ -12,7 +12,6 @@ class MoviesController < ApplicationController
 
   def index
     
-    
     if params[:sorting_mechanism].nil?
       @sorting_mechanism = session[:sorting_mechanism]
     else
@@ -21,7 +20,16 @@ class MoviesController < ApplicationController
     
     
     @movies = Movie.all
-      
+    
+    @all_ratings = Movie.ratings
+    if(!params[:ratings])
+      @checked_ratings = ['G', 'PG', 'PG-13', 'R', 'NC-17']
+      @movies = @movies.where(rating: @checked_ratings)
+    else
+      @checked_ratings = params[:ratings].keys
+      @movies = @movies.where(rating: @checked_ratings)
+    end
+    
     if session[:sorting_mechanism] == "title"
       @movies = @movies.sort { |a,b| a.title <=> b.title }
       @movie_highlight = "hilite"
